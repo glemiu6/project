@@ -1,0 +1,84 @@
+def ler_config(S):
+    """
+    Lê o arquivo de configuração e retorna um dicionário com os parâmetros.
+    """
+    filename = f"config_{S}.txt"
+    config = {}
+
+    with open(filename, 'r') as file:
+        for line in file:
+            line = line.strip()
+            if '=' in line and not line.startswith('#'):
+                key, value = line.split('=')
+                key = key.strip()
+                value = value.split('#')[0].strip()
+
+                try:
+                    config[key] = eval(value)
+                except:
+                    if value.lower() in ['true', 'false']:
+                        config[key] = value.lower() == 'true'
+                    else:
+                        config[key] = value
+
+    return config
+
+# Função melhorada para criar uma nova pessoa
+def nova_pessoa(idade=0, config=None):
+    """
+    Cria uma nova pessoa com base na idade e configuração.
+    """
+    global cc
+    genero = 'M' if cc % 2 == 0 else 'F'
+    cc += 1
+
+    salario = 0
+    pensao = 0
+
+    if idade >= config['IDADE_REFORMA']:
+        pensao = config['PENSAO_BASE']
+    elif idade in config['ACTIVO']:
+        salario = config['SALARIO_BASE']
+
+    return {
+        'cc': cc,
+        'nome': f'Pessoa_{cc}',
+        'genero': genero,
+        'idade': idade,
+        'salario': salario,
+        'pensao': pensao
+    }
+
+# Função para ler a população inicial, já corrigindo idades extremas
+def ler_populacao_inicial(S, config):
+    """
+    Lê a população inicial e remove pessoas acima de MAX_IDADE.
+    """
+    new_population = []
+    file_pop = f'população_inicial_{S}.txt'
+
+    with open(file_pop, 'r') as populacion:
+        for line in populacion:
+            idade_data = line.strip().split(',')
+
+            try:
+                idade = int(idade_data[3])
+            except (ValueError, IndexError):
+                idade = None
+                for data in idade_data:
+                    try:
+                        idade = int(data)
+                        break
+                    except ValueError:
+                        continue
+                if idade is None:
+                    continue
+
+            if idade <= config['MAX_IDADE']:
+                new_pers = nova_pessoa(idade, config)
+                new_population.append(new_pers)
+
+    return new_population
+
+# Restante do código ajustado de acordo
+# O restante do código pode ser ajustado com base nas sugestões acima, mantendo consistência e clareza.
