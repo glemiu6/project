@@ -3,11 +3,16 @@ MAX_IDADE = 100
 SALARIO_BASE = 1000
 PENSAO_BASE = 500
 DESCONTOS = 0.23
-MORTALIDADE = {"jovens": (range(0,20), 0.001), "adultos": (range(20,50), 0.002), "velhos": (range(50,80), 0.005), "idosos":(range(80,101), 0.04)}
+MORTALIDADE = {
+    "jovens": (range(0, 20), 0.001),
+    "adultos": (range(20, 50), 0.002),
+    "velhos": (range(50, 80), 0.005),
+    "idosos": (range(80, MAX_IDADE + 1), 0.04)
+}
 NATALIDADE = 100
 IDADE_REFORMA = 67
-ACTIVO = range(23,IDADE_REFORMA+1)
-PENSIONISTA = range(IDADE_REFORMA+1,101)
-FUNDO_PENSOES_INICIAL = 1000*1000
+ACTIVO = range(23, IDADE_REFORMA + 1)
+PENSIONISTA = range(IDADE_REFORMA, MAX_IDADE + 1)
+FUNDO_PENSOES_INICIAL = 1000000
 EPOCAS = 30
 ANO_INICIAL = 2011
